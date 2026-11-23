@@ -1,50 +1,65 @@
-# Welcome to your Expo app 👋
+<div align="center">
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<img src="docs/readme/hero.gif" alt="Markov Chains: animated graph illustration" width="1040" />
 
-## Get started
+# Markov Chains
 
-1. Install dependencies
+**Explore how connected pages earn visibility.**
 
-   ```bash
-   npm install
-   ```
+<img src="docs/readme/stack.svg" alt="Expo 53 / React Native / SVG" />
 
-2. Start the app
+[Overview](#overview) &nbsp; · &nbsp; [Run locally](#run-locally) &nbsp; · &nbsp; [Explore the repository](https://github.com/mcampo0215/MarkovChains)
 
-   ```bash
-   npx expo start
-   ```
+</div>
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Overview
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+An Expo / React Native interface for a three-page PageRank example. Navigate between pages A, B, and C, then inspect a node graph and the ranks returned by a separate API.
 
-## Get a fresh project
+| Navigate | Inspect | Rank |
+| :--- | :--- | :--- |
+| Follow the example links between pages A, B, and C. | View the three-node relationship graph drawn with SVG. | Display API-provided scores and rank positions. |
 
-When you're ready, run:
+## Run locally
 
-```bash
-npm run reset-project
+Install Node.js and npm, then:
+
+```sh
+npm ci
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Use the toolchain appropriate for the native target. This project uses Expo SDK 53, React Native 0.79, and Expo Router 5 as declared in `package.json`.
 
-## Learn more
+## Data dependency
 
-To learn more about developing your project with Expo, look at the following resources:
+`app/Data.jsx` and `app/customPageRank.jsx` fetch `http://localhost:8080/api/pageRank`. The expected response is an array with `page` and numeric `rank` fields, for example:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```json
+[
+  { "page": "A", "rank": 0.4 },
+  { "page": "B", "rank": 0.3 },
+  { "page": "C", "rank": 0.3 }
+]
+```
 
-## Join the community
+These numbers illustrate the response shape, not calculated project results. A PageRank backend is not included. Configure a reachable API address when running on an emulator or phone; its `localhost` is not generally your computer.
 
-Join our community of developers creating universal apps.
+## Explore the code
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+| Source | Responsibility |
+| :--- | :--- |
+| [app/Links.jsx](app/Links.jsx) | Example outgoing links: A to B/C, B to C/A, C to A. |
+| [app/FirstPage.jsx](app/FirstPage.jsx) | Page A and navigation into the rank view. |
+| [app/Data.jsx](app/Data.jsx) | API-driven rank table. |
+| [app/customPageRank.jsx](app/customPageRank.jsx) | SVG graph and scores sorted into visibility positions. |
+
+## Current scope
+
+The graph layout is fixed and rank computation is delegated to the external API. Some navigation paths use inconsistent casing, and `secondPage.jsx` references an undeclared router; these need attention before treating every route as complete. The banner illustrates graph traversal rather than live API output.
+
+---
+
+<p align="center"><a href="#markov-chains">Back to the top</a></p>
